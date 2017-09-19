@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -65,7 +66,14 @@ public class Main {
         ////////////////// Here, i present to you, Month.May as json. BEN I BETTER EXCEED YOUR EXPECTATIONS /////////////////////
 
         File f = new File("may.json");
-        FileWriter fw = new FileWriter(f);
+        FileWriter fw = null;
+
+        try {
+            fw = new FileWriter(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         Month may = Month.MAY;
 
@@ -73,11 +81,16 @@ public class Main {
 
         try {
             jsonInString = mapper.writeValueAsString(may);
+            fw.write(jsonInString);
+            fw.close();
+            System.out.println(jsonInString);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } catch (IOException eio) {
+            eio.printStackTrace();
         }
 
-        fw.write(jsonInString);
-        fw.close();
+
+
     }
 }
